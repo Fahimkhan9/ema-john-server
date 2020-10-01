@@ -48,10 +48,11 @@ app.get("/product/:key",(req,res) => {
 
 app.post("/getfewproductsbykeys",(req,res) => {
   const productkeys =req.body
+
   productsCollection.find({key:{$in:productkeys}})
   .toArray((err,ele)=>{
 res.send(ele)
-console.log(ele);
+
   })
 })
 
