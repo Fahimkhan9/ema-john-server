@@ -10,8 +10,8 @@ require('dotenv').config()
 
 app.use(cors())
 app.use(bodyparser.json())
-console.log(process.env.DB_PASS);
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vigvf.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+// console.log(process.env.DB_PASS);
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.vigvf.mongodb.net/${processe.env.DB_NAME}?retryWrites=true&w=majority`;
 
  
 app.get("/",(req,res) => {
@@ -28,14 +28,16 @@ app.post("/addproduct",(req,res) => {
     // console.log(product);
     productsCollection.insertOne(product)
     .then(result => {
-        console.log(result)
+        // console.log(result)
     res.send(result.insertedCount)
     })
 })
 
 app.get("/products",(req,res) => {
-    productsCollection.find({})
+  const filter = req.query.filter
+    productsCollection.find({name: {$regex: filter}})
     .toArray((err,ele) => {
+      // console.log(ele);
         res.send(ele)
     })
 })
@@ -61,7 +63,7 @@ app.post("/addorder",(req,res) => {
   // console.log(product);
   orderscollection.insertOne(orderinfo)
   .then(result => {
-      console.log(result)
+      // console.log(result)
   res.send(result.insertedCount>0)
   })
 })
@@ -76,3 +78,7 @@ console.log("db connected");
 
 
 app.listen( process.env.PORT || port)
+
+
+
+
